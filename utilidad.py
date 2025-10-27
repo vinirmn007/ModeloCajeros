@@ -1,5 +1,5 @@
 from cliente import Cliente
-from cliente_expres import ClienteExpres
+from cliente_express import ClienteExpres
 
 def generar_clientes(caja, cantidad, tipo="normal"):
     for _ in range(cantidad):
