@@ -1,7 +1,7 @@
 from cliente import Cliente
 import random
 
-class ClienteExpress(Cliente): 
+class ClienteExpres(Cliente): 
     def __init__(self):
         super().__init__() 
 

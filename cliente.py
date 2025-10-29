@@ -9,7 +9,7 @@ class Cliente:
 
     # Setters y getters
     def set_articulos(self):
-        self.articulos = random.randint(1, 50)
+        self.articulos = random.randint(1, 40)
     
     def set_t_escaneo(self, t_escaneo):
         self.tiempo_escaneo = t_escaneo
@@ -26,6 +26,7 @@ class Cliente:
         if self.tipo_pago == "tarjeta":
             return random.randint(5, 15)
         
+    # Cálculo del tiempo total del cliente
     def calcular_tiempo_total(self):
         t_escaneo = self.articulos * self.tiempo_escaneo
         t_cobro = self.t_cobro()
