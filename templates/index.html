@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulación de Cajas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        form { 
+            margin-bottom: 30px; 
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+        }
+        .form-group {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        form label { margin-right: 5px; display: block; margin-bottom: 5px; font-weight: bold;}
+        form input[type="number"] { width: 60px; padding: 5px; }
+        form select {
+            padding: 5px;
+            margin-left: 5px;
+        }
+        
+        form button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        .cajas-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            min-height: 300px; 
+        }
+        .caja-bloque {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            min-height: 250px;
+            flex: 1;
+            min-width: 150px;
+            margin: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .caja-express {
+            background-color: #e0f7fa; 
+            border-color: #00acc1;
+        }
+        .caja-bloque h3 { margin-top: 0; }
+        .personas { 
+            font-size: 24px; 
+            word-wrap: break-word; 
+            min-height: 100px; 
+            padding-top: 10px;
+        }
+        
+        /* --- CSS para la animación --- */
+        .persona-icon {
+            display: inline-block;
+            margin: 2px;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .persona-icon.atendido {
+            opacity: 0; 
+            transform: scale(0.5) translateX(-100px); 
+        }
+
+        .tiempo-total { 
+            font-size: 1.1em; 
+            font-weight: bold; 
+            color: #333;
+        }
+        .tiempo-final {
+            font-size: 1.2em; 
+            font-weight: bold; 
+            color: #0056b3;
+        }
+
+        .resultado {
+            margin-top: 30px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #28a745;
+        }
+        .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simulación de Cajas de Supermercado</h1>
+
+        <form action="/simular" method="POST">
+            
+            <div class="form-group">
+                <label for="n_caja1">Caja 1</label>
+                Clientes: <input type="number" id="n_caja1" name="n_caja1" value="0" min="0">
+                <select name="tipo_caja1">
+                    <option value="normal" selected>Normal (5s)</option>
+                    <option value="principiante">Principiante (9s)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="n_caja2">Caja 2</label>
+                Clientes: <input type="number" id="n_caja2" name="n_caja2" value="0" min="0">
+                <select name="tipo_caja2">
+                    <option value="normal" selected>Normal (5s)</option>
+                    <option value="principiante">Principiante (9s)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="n_caja3">Caja 3</label>
+                Clientes: <input type="number" id="n_caja3" name="n_caja3" value="0" min="0">
+                <select name="tipo_caja3">
+                    <option value="normal" selected>Normal (5s)</option>
+                    <option value="principiante">Principiante (9s)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="n_caja4">Caja 4</label>
+                Clientes: <input type="number" id="n_caja4" name="n_caja4" value="0" min="0">
+                <select name="tipo_caja4">
+                    <option value="normal" selected>Normal (5s)</option>
+                    <option value="principiante">Principiante (9s)</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="background-color: #e0f7fa;">
+                <label for="n_express">Caja Express</label>
+                Clientes: <input type="number" id="n_express" name="n_express" value="0" min="0">
+                <select name="tipo_express">
+                    <option value="normal" selected>Normal (5s)</option>
+                    <option value="principiante">Principiante (9s)</option>
+                </select>
+            </div>
+
+            <button type="submit" onclick="this.disabled=true; this.innerText='Simulando...'; this.form.submit();">Ejecutar Simulación</button>
+        </form>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if tiempos %}
+            <div class="cajas-container">
+                
+                {% for nombre, datos in tiempos.items() %}
+                    <div class="caja-bloque {% if 'Express' in nombre %}caja-express{% endif %}" id="caja-{{ nombre.replace(' ', '_').replace('(', '').replace(')', '') }}">
+                        <h3>{{ nombre }}</h3>
+                        
+                        <div class="personas">
+                            {% for i in range(datos.personas_iniciales) %}
+                                <span class="persona-icon">👤</span>
+                            {% endfor %}
+                            {% if datos.personas_iniciales == 0 %}
+                                (Vacía)
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            <div class="tiempo-total" id="reloj-{{ nombre.replace(' ', '_').replace('(', '').replace(')', '') }}">
+                                Tiempo: 0m 0s
+                            </div>
+                            <div class="tiempo-final">
+                                Total: {{ (datos.tiempo_total_seg // 60) }}m {{ (datos.tiempo_total_seg % 60) }}s
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="resultado" id="resultado-final" style="display: none;">
+                🟢 La mejor opción es: {{ mejor }}
+            </div>
+
+
+            <script>
+                // Se ejecuta cuando el HTML está listo
+                document.addEventListener('DOMContentLoaded', () => {
+                    
+                    console.log("Paso 1: DOM Cargado. Iniciando script."); // DEBUG 1
+
+                    // --- ¡¡¡AQUÍ EMPIEZA EL 'TRY'!!! ---
+                    try {
+                        // 1. Pasa los datos de Python (Flask) a JavaScript
+                        // 'tiempos' solo existe si venimos del formulario
+                        const datosSimulacion = {{ tiempos | tojson }};
+                        console.log("Paso 2: Datos de simulación cargados:", datosSimulacion); // DEBUG 2
+                    
+                        // 2. Velocidad de la simulación
+                        // 100ms = 1 segundo de simulación (10x más rápido)
+                        const VELOCIDAD_SIMULACION = 100; 
+
+                        // 3. Función para formatear "125" segundos a "2m 5s"
+                        function formatearTiempo(segundos) {
+                            const minutos = Math.floor(segundos / 60);
+                            const seg = Math.floor(segundos % 60); // Quita decimales
+                            return `Tiempo: ${minutos}m ${seg}s`;
+                        }
+
+                        // 4. Función que anima UNA caja
+                        function simularCaja(nombreCaja, datosCaja) {
+                            console.log(`Paso 3: Iniciando simulación para: ${nombreCaja}`); // DEBUG 3
+                            
+                            // 'Promise' se usa para saber cuándo termina la animación
+                            return new Promise((resolve) => {
+                                
+                                // --- ¡CORREGIDO! ---
+                                // Usamos / /g (expresión regular) para reemplazar TODOS los espacios
+                                // y también los paréntesis
+                                const idCaja = `caja-${nombreCaja.replace(/ /g, '_').replace('(', '').replace(')', '')}`;
+                                const cajaElement = document.getElementById(idCaja);
+                                
+                                if (!cajaElement) {
+                                    console.error(`ERROR: No se encontró el elemento HTML con ID: ${idCaja}`); // DEBUG 4
+                                    return resolve(); // Resuelve para no detener otras cajas
+                                }
+
+                                // --- ¡CORREGIDO! ---
+                                // Hacemos el mismo reemplazo para el ID del reloj
+                                const relojElement = document.getElementById(`reloj-${nombreCaja.replace(/ /g, '_').replace('(', '').replace(')', '')}`);
+                                if (!relojElement) {
+                                    console.error(`ERROR: No se encontró el RELOJ con ID para: ${nombreCaja}`); // DEBUG 5
+                                    return resolve();
+                                }
+
+                                const iconosPersonas = cajaElement.querySelectorAll('.persona-icon');
+                                console.log(`Encontrados ${iconosPersonas.length} íconos de personas en ${nombreCaja}`); // DEBUG 6
+                                
+                                const tiemposClientes = [...datosCaja.tiempos_clientes];
+                                let tiempoSimulado = 0; // El tiempo "en el juego"
+                                let clienteActualIndex = 0;
+                                let tiempoLimiteClienteActual = tiemposClientes.shift() || 0; 
+
+                                if (datosCaja.personas_iniciales === 0) {
+                                    console.log(`Caja ${nombreCaja} está vacía. Saltando simulación.`); // DEBUG 7
+                                    return resolve(); // No hay nada que simular
+                                }
+
+                                // 5. El "Loop" de la simulación
+                                const intervalo = setInterval(() => {
+                                    tiempoSimulado++;
+                                    
+                                    // Actualiza el reloj de esta caja
+                                    relojElement.textContent = formatearTiempo(tiempoSimulado);
+
+                                    // ¿Se terminó de atender al cliente actual?
+                                    if (tiempoSimulado >= tiempoLimiteClienteActual) {
+                                        
+                                        // Aplica la clase CSS para que el ícono desaparezca
+                                        if (clienteActualIndex < iconosPersonas.length) {
+                                            iconosPersonas[clienteActualIndex].classList.add('atendido');
+                                        }
+                                        
+                                        clienteActualIndex++;
+                                        
+                                        // ¿Quedan más clientes en la fila?
+                                        if (tiemposClientes.length > 0) {
+                                            // Suma el tiempo del siguiente cliente al límite
+                                            tiempoLimiteClienteActual += tiemposClientes.shift();
+                                        } else {
+                                            // No quedan más clientes, se detiene la simulación
+                                            clearInterval(intervalo);
+                                            // Asegura que el reloj muestre el tiempo final exacto
+                                            relojElement.textContent = formatearTiempo(datosCaja.tiempo_total_seg);
+                                            console.log(`Paso 4: Simulación terminada para: ${nombreCaja}`); // DEBUG 8
+                                            resolve(); // Avisa que esta caja terminó
+                                        }
+                                    }
+                                }, VELOCIDAD_SIMULACION); // Velocidad real (en ms) del loop
+                            });
+                        }
+
+                        // 6. Iniciar la simulación para TODAS las cajas
+                        const promesasSimulacion = [];
+                        for (const [nombre, datos] of Object.entries(datosSimulacion)) {
+                            promesasSimulacion.push(simularCaja(nombre, datos));
+                        }
+
+                        // 7. Mostrar el resultado final ("La mejor opción es...")
+                        Promise.all(promesasSimulacion).then(() => {
+                            console.log("Paso 5: ¡Todas las simulaciones terminadas!"); // DEBUG 9
+                            document.getElementById('resultado-final').style.display = 'block';
+                        });
+
+                    // --- ¡¡¡AQUÍ ESTÁ EL 'CATCH'!!! ---
+                    } catch (e) {
+                         // Esto solo se ejecuta si la variable 'tiempos' no existe
+                         // Lo cual es normal la primera vez que cargas la página.
+                         // No es un error.
+                    }
+                });
+            </script>
+        {% endif %}
+    </div>
+</body>
+</html>
