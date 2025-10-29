@@ -50,10 +50,10 @@ def simular():
     n4 = int(request.args.get('n4', 0))
     n_exp = int(request.args.get('n_exp', 0))
 
-    tiempos1, arts1, total1 = ejecutar_simulacion_caja(n1, "normal", "normal")
-    tiempos2, arts2, total2 = ejecutar_simulacion_caja(n2, "normal", "normal")
-    tiempos3, arts3, total3 = ejecutar_simulacion_caja(n3, "normal", "normal")
-    tiempos4, arts4, total4 = ejecutar_simulacion_caja(n4, "normal", "normal")
+    tiempos1, arts1, total1 = ejecutar_simulacion_caja(n1, "normal") #cambiar a principiante
+    tiempos2, arts2, total2 = ejecutar_simulacion_caja(n2, "normal")
+    tiempos3, arts3, total3 = ejecutar_simulacion_caja(n3, "normal")
+    tiempos4, arts4, total4 = ejecutar_simulacion_caja(n4, "normal")
     tiempos_exp, arts_exp, total_exp = ejecutar_simulacion_caja(n_exp, "normal", "express")
     
     datos_simulacion = {
