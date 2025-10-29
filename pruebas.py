@@ -1,6 +1,7 @@
 import sys
 import os
 from contextlib import redirect_stdout
+import random
 
 # Importa tus clases y funciones existentes
 from caja import Caja
@@ -18,7 +19,8 @@ def ejecutar_una_simulacion_silenciosa():
         caja2 = Caja('normal')
         caja3 = Caja('normal')
         caja4 = Caja('principiante')
-        caja_express = Caja("normal")
+
+        caja_express = Caja('normal') #random.choice(["normal", "principiante"])
 
         # 2. Generar clientes (igual que en tu script)
         # (Esta función 'generar_clientes' no imprime nada, 
@@ -27,7 +29,7 @@ def ejecutar_una_simulacion_silenciosa():
         generar_clientes(caja2, 10)
         generar_clientes(caja3, 10)
         generar_clientes(caja4, 10)
-        generar_clientes(caja_express, 25, tipo="express")
+        generar_clientes(caja_express, 20, tipo="express")
 
         tiempos = {}
 
