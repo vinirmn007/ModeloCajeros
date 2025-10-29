@@ -1,6 +1,3 @@
-from cliente import Cliente
-
-# --- ¡ASEGÚRATE DE QUE ESTA 'C' SEA MAYÚSCULA! ---
 class Caja:
     def __init__(self, tipo_cajero):
         self.tipo_cajero = tipo_cajero
@@ -12,7 +9,7 @@ class Caja:
         elif tipo_cajero == "normal":
             self.tiempo_escaneo = 5
         else:
-            self.tiempo_escaneo = 5
+            raise ValueError("Tipo de cajero no válido")
 
     def agregar_cliente(self, cliente):
         cliente.set_t_escaneo(self.tiempo_escaneo)
