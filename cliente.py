@@ -5,11 +5,10 @@ class Cliente:
         self.articulos = 0
         self.tiempo_escaneo = 0
         self.tipo_pago = random.choice(["efectivo", "tarjeta"])
-        # NO llamamos a set_articulos() aquí
+        self.set_articulos()
 
     # Setters y getters
     def set_articulos(self):
-        # Aleatorio entre 1 y 50 (según el PDF)
         self.articulos = random.randint(1, 50)
     
     def set_t_escaneo(self, t_escaneo):
@@ -22,8 +21,10 @@ class Cliente:
         return self.articulos
 
     def t_cobro(self):
-        # Aleatorio entre 15 y 30 (según el PDF)
-        return random.randint(15, 30) 
+        if self.tipo_pago == "efectivo":
+            return random.randint(10, 30)
+        if self.tipo_pago == "tarjeta":
+            return random.randint(5, 15)
         
     def calcular_tiempo_total(self):
         t_escaneo = self.articulos * self.tiempo_escaneo
