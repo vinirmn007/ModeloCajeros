@@ -9,7 +9,7 @@ class Cliente:
 
     # Setters y getters
     def set_articulos(self):
-        self.articulos = random.randint(1, 40)
+        self.articulos = random.randint(1, 50)
     
     def set_t_escaneo(self, t_escaneo):
         self.tiempo_escaneo = t_escaneo
