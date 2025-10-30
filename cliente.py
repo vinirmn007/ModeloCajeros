@@ -22,9 +22,9 @@ class Cliente:
 
     def t_cobro(self):
         if self.tipo_pago == "efectivo":
-            return random.randint(10, 30)
+            return random.randint(5, 30)
         if self.tipo_pago == "tarjeta":
-            return random.randint(5, 15)
+            return random.randint(5, 10)
         
     # Cálculo del tiempo total del cliente
     def calcular_tiempo_total(self):
