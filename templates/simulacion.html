@@ -77,10 +77,8 @@
 
         const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-        /**
-         * 2. Lógica de la Caja (El Simulador VISUAL)
-         * Esta función ahora solo recibe el "plan" del backend y anima.
-         */
+
+        //Logica de la Caja (El Simulador VISUAL)
         async function simularCaja(idCaja, plan, esExpress = false) {
             const cajaElement = document.getElementById(idCaja);
             const filaElement = document.getElementById('fila-' + idCaja);
@@ -129,10 +127,6 @@
             cajaElement.classList.remove('activa');
         }
 
-        /**
-         * 3. Función Principal (El Orquestador)
-         * MODIFICADA para llamar al backend de Python
-         */
         async function iniciarSimulacion() {
             const boton = document.getElementById('btn-simular');
             const resultadosDiv = document.getElementById('resultados');
@@ -151,9 +145,6 @@
 
             let DelBackend;
             try {
-                // --- ¡NUEVO! LLAMADA FETCH AL BACKEND DE PYTHON ---
-                // Usamos una ruta relativa porque el HTML es servido
-                // desde el mismo servidor que la API
                 const url = `/simular?n1=${n1}&n2=${n2}&n3=${n3}&n4=${n4}&n_exp=${n_exp}`;  //aumentar o quitar cajas &n5=${n5}
                 const response = await fetch(url);
                 
@@ -205,7 +196,7 @@
                 });
                 mejorCaja = mejor;
 
-                // Mostramos los tiempos del objeto 'totales'
+                //mostramos los tiempos del objeto 'totales'
                 for (const [nombre, tiempo] of Object.entries(totales)) {
                     if (tiempo > 0) {
                         const minutos = Math.floor(tiempo / 60);
@@ -221,14 +212,14 @@
                 contenidoResultados += "<p>No se simularon clientes.</p>";
             }
 
-            // Mostrar resultados y reactivar el botón
+            //mostrar resultados y reactivar el botón
             resultadosDiv.innerHTML = contenidoResultados;
             resultadosDiv.style.display = 'block';
             boton.disabled = false;
             boton.innerText = 'Iniciar Simulación de Nuevo';
         }
 
-        // Asignar la función al botón
+        //asignar la función al botón
         document.getElementById('btn-simular').addEventListener('click', iniciarSimulacion);
 
     </script>
