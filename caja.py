@@ -7,9 +7,9 @@ class Caja:
 
         # Definir tiempo de escaneo según tipo
         if tipo_cajero == "principiante":
-            self.tiempo_escaneo = random.randint(5, 9)
+            self.tiempo_escaneo = random.randint(3, 5)
         elif tipo_cajero == "normal":
-            self.tiempo_escaneo = random.randint(2, 5)
+            self.tiempo_escaneo = random.randint(1, 3)
         else:
             raise ValueError("Tipo de cajero no válido")
 
