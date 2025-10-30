@@ -9,9 +9,7 @@
 
 </head>
 <body>
-
     <h1>Simulación de Cajas de Supermercado</h1>
-
     <div class="controles">
         <div class="grupo-inputs">
             <div class="control-caja">
@@ -30,6 +28,10 @@
                 <label for="n-caja4">Caja 4</label>
                 <input type="number" id="n-caja4" min="0">
             </div>
+            <!-- <div class="control-caja">
+                <label for="n-caja5">Caja 5</label>
+                <input type="number" id="n-caja5" min="0">
+            </div> -->
             <div class="control-caja">
                 <label for="n-caja-express" style="color: #007bff;">Caja Express</label>
                 <input type="number" id="n-caja-express" min="0">
@@ -57,6 +59,10 @@
             <h3>Caja 4</h3>
             <div class="fila" id="fila-caja4"></div>
         </div>
+        <!-- <div class="caja" id="caja5">
+            <h3>Caja 5</h3>
+            <div class="fila" id="fila-caja5"></div>
+        </div> -->
         <div class="caja express" id="caja-express">
             <h3>Caja Express</h3>
             <div class="fila" id="fila-caja-express"></div>
@@ -68,7 +74,6 @@
         //velocidad
         const VELOCIDAD_SIMULACION_MS = 20;
         const TIEMPO_ANIMACION_MS = 300; // 150ms = 0.15s
-        
 
         const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -83,13 +88,13 @@
             filaElement.innerHTML = '';
             cajaElement.classList.add('activa'); 
             
-            // Obtenemos las listas del plan enviado por Python
+            //obtenemos las listas del plan enviado por Python
             const tiemposDeEspera = plan.tiempos;
             const articulosClientes = plan.articulos;
             
             const clientesParaProcesar = [];
 
-            // Fase 1: Crear todos los clientes visualmente
+            //crear todos los clientes visualmente
             for (let i = 0; i < tiemposDeEspera.length; i++) {
                 const tiempoCliente = tiemposDeEspera[i];
                 const articulosCliente = articulosClientes[i];
@@ -99,20 +104,20 @@
                 if (esExpress) {
                     clienteDiv.classList.add('express');
                 }
-                // Mostramos los artículos calculados por Python
+                //mostrar los artículos calculados por python
                 clienteDiv.innerText = articulosCliente; 
                 filaElement.appendChild(clienteDiv); 
                 
                 clientesParaProcesar.push({ 
                     div: clienteDiv, 
-                    // Usamos el tiempo calculado por Python
+                    //usar tiempo calculado por python
                     tiempo: tiempoCliente
                 });
             }
             
-            await sleep(300); // Esperar animación de entrada
+            await sleep(300); //esperar animacion de entrada
 
-            // Fase 2: Procesar los clientes (Sin cambios)
+            //procesar los clientes (Sin cambios)
             for (const cliente of clientesParaProcesar) {
                 const tiempoEsperaEscalado = cliente.tiempo * VELOCIDAD_SIMULACION_MS;
                 await sleep(tiempoEsperaEscalado); 
@@ -141,14 +146,15 @@
             const n2 = document.getElementById('n-caja2').value;
             const n3 = document.getElementById('n-caja3').value;
             const n4 = document.getElementById('n-caja4').value;
+            //const n5 = document.getElementById('n-caja5').value;
             const n_exp = document.getElementById('n-caja-express').value;
 
-            let datosDelBackend;
+            let DelBackend;
             try {
                 // --- ¡NUEVO! LLAMADA FETCH AL BACKEND DE PYTHON ---
                 // Usamos una ruta relativa porque el HTML es servido
                 // desde el mismo servidor que la API
-                const url = `/simular?n1=${n1}&n2=${n2}&n3=${n3}&n4=${n4}&n_exp=${n_exp}`;
+                const url = `/simular?n1=${n1}&n2=${n2}&n3=${n3}&n4=${n4}&n_exp=${n_exp}`;  //aumentar o quitar cajas &n5=${n5}
                 const response = await fetch(url);
                 
                 if (!response.ok) {
@@ -159,7 +165,7 @@
                 // -------------------------------------------------
 
             } catch (error) {
-                // Manejar error si el servidor Python no está corriendo
+                //manejar error si el servidor python no está corriendo
                 boton.disabled = false;
                 boton.innerText = 'Error. ¿Iniciaste el backend?';
                 resultadosDiv.innerHTML = `<h2>Error de Conexión</h2><p>No se pudo conectar al servidor de Python.</p><p>Asegúrate de tener 'app.py' ejecutándose.</p>`;
@@ -172,18 +178,19 @@
 
             // Obtenemos los datos del backend
             const plan = datosDelBackend.plan_simulacion;
-            const totales = datosDelBackend.totales_backend; // ¡Usamos los totales de Python!
+            const totales = datosDelBackend.totales_backend; //calculos de python
 
-            // Iniciar las animaciones VISUALES
+            //iniciar las animaciones VISUALES
             const promesasDeSimulacionVisual = [
                 simularCaja('caja1', plan.caja1, false),
                 simularCaja('caja2', plan.caja2, false),
                 simularCaja('caja3', plan.caja3, false),
                 simularCaja('caja4', plan.caja4, false),
+                //simularCaja('caja5', plan.caja5, false),
                 simularCaja('caja-express', plan.caja_express, true)
             ];
 
-            // Esperar a que TODAS las animaciones terminen
+            //esperar a que todas las animaciones terminen
             await Promise.all(promesasDeSimulacionVisual);
 
             // Procesar resultados (Ahora usamos los 'totales' de Python)
