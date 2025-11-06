@@ -6,5 +6,4 @@ class ClienteExpres(Cliente):
         super().__init__() 
 
     def set_articulos(self):
-        # Límite de 10 artículos (según el PDF)
         self.articulos = random.randint(1, 10)

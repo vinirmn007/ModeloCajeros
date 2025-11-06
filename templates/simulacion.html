@@ -60,10 +60,7 @@
             </div>
 
         </div>
-        <!-- <div class="control-velocidad">
-            <input type="checkbox" id="check-velocidad">
-            <label for="check-velocidad">Acelerar Simulación (x4)</label>
-        </div> -->
+       
         <button id="btn-simular">Iniciar Simulación</button>
     </div>
 
@@ -94,14 +91,14 @@
 
     <script>
         
-        //velocidad
+        
         const VELOCIDAD_SIMULACION_MS = 20;
         const TIEMPO_ANIMACION_MS = 300; // 150ms = 0.15s
 
         const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 
-        //Logica de la Caja (El Simulador VISUAL)
+        
         async function simularCaja(idCaja, plan, esExpress = false) {
             const cajaElement = document.getElementById(idCaja);
             const filaElement = document.getElementById('fila-' + idCaja);
@@ -109,13 +106,12 @@
             filaElement.innerHTML = '';
             cajaElement.classList.add('activa'); 
             
-            //obtenemos las listas del plan enviado por Python
-            const tiemposDeEspera = plan.tiempos;
+             const tiemposDeEspera = plan.tiempos;
             const articulosClientes = plan.articulos;
             
             const clientesParaProcesar = [];
 
-            //crear todos los clientes visualmente
+            
             for (let i = 0; i < tiemposDeEspera.length; i++) {
                 const tiempoCliente = tiemposDeEspera[i];
                 const articulosCliente = articulosClientes[i];
@@ -125,20 +121,20 @@
                 if (esExpress) {
                     clienteDiv.classList.add('express');
                 }
-                //mostrar los artículos calculados por python
+                
                 clienteDiv.innerText = articulosCliente; 
                 filaElement.appendChild(clienteDiv); 
                 
                 clientesParaProcesar.push({ 
                     div: clienteDiv, 
-                    //usar tiempo calculado por python
+                    
                     tiempo: tiempoCliente
                 });
             }
             
-            await sleep(300); //esperar animacion de entrada
+            await sleep(300);
 
-            //procesar los clientes (Sin cambios)
+            
             for (const cliente of clientesParaProcesar) {
                 const tiempoEsperaEscalado = cliente.tiempo * VELOCIDAD_SIMULACION_MS;
                 await sleep(tiempoEsperaEscalado); 
@@ -155,33 +151,41 @@
             const resultadosDiv = document.getElementById('resultados');
 
             boton.disabled = true;
-            boton.innerText = 'Consultando Backend...'; // Nuevo estado
+            boton.innerText = 'Consultando Backend...';
             resultadosDiv.style.display = 'none';
             resultadosDiv.innerHTML = '';
 
             // --- LECTURA DE DATOS (MODIFICADO) ---
             const n1 = document.getElementById('n-caja1').value;
-            const tipo1 = document.getElementById('tipo-caja1').value; // NUEVO
+            const tipo1 = document.getElementById('tipo-caja1').value; 
             
             const n2 = document.getElementById('n-caja2').value;
-            const tipo2 = document.getElementById('tipo-caja2').value; // NUEVO
+            const tipo2 = document.getElementById('tipo-caja2').value; 
             
             const n3 = document.getElementById('n-caja3').value;
-            const tipo3 = document.getElementById('tipo-caja3').value; // NUEVO
+            const tipo3 = document.getElementById('tipo-caja3').value; 
             
             const n4 = document.getElementById('n-caja4').value;
-            const tipo4 = document.getElementById('tipo-caja4').value; // NUEVO
+<<<<<<< HEAD
+            const tipo4 = document.getElementById('tipo-caja4').value;
+            
+            
+=======
+            const tipo4 = document.getElementById('tipo-caja4').value; 
             
             //const n5 = document.getElementById('n-caja5').value;
-            //const tipo5 = document.getElementById('tipo-caja5').value; // NUEVO
+            //const tipo5 = document.getElementById('tipo-caja5').value; 
+>>>>>>> ef71046 (Arreglitos)
             
             const n_exp = document.getElementById('n-caja-express').value;
-            const tipo_exp = document.getElementById('tipo-caja-express').value; // NUEVO
+            const tipo_exp = document.getElementById('tipo-caja-express').value; 
 
             let DelBackend;
             try {
-                // --- URL (MODIFICADA) ---
-                // Añadimos los nuevos parámetros 'tipo' a la URL
+<<<<<<< HEAD
+            
+=======
+>>>>>>> ef71046 (Arreglitos)
                 const url = `/simular?n1=${n1}&tipo1=${tipo1}` +
                             `&n2=${n2}&tipo2=${tipo2}` +
                             `&n3=${n3}&tipo3=${tipo3}` +
@@ -195,10 +199,10 @@
                 }
                 
                 datosDelBackend = await response.json();
-                // -------------------------------------------------
+                
 
             } catch (error) {
-                //manejar error si el servidor python no está corriendo
+                
                 boton.disabled = false;
                 boton.innerText = 'Error. ¿Iniciaste el backend?';
                 resultadosDiv.innerHTML = `<h2>Error de Conexión</h2><p>No se pudo conectar al servidor de Python.</p><p>Asegúrate de tener 'app.py' ejecutándose.</p>`;
@@ -209,28 +213,32 @@
             
             boton.innerText = 'Simulando...';
 
-            // Obtenemos los datos del backend
+            
             const plan = datosDelBackend.plan_simulacion;
-            const totales = datosDelBackend.totales_backend; //calculos de python
+            const totales = datosDelBackend.totales_backend; 
 
-            //iniciar las animaciones VISUALES
+          
             const promesasDeSimulacionVisual = [
                 simularCaja('caja1', plan.caja1, false),
                 simularCaja('caja2', plan.caja2, false),
                 simularCaja('caja3', plan.caja3, false),
                 simularCaja('caja4', plan.caja4, false),
-                //simularCaja('caja5', plan.caja5, false),
+
                 simularCaja('caja-express', plan.caja_express, true)
             ];
 
-            //esperar a que todas las animaciones terminen
+            
             await Promise.all(promesasDeSimulacionVisual);
 
-            // Procesar resultados (Ahora usamos los 'totales' de Python)
+<<<<<<< HEAD
+        
+=======
+            
+>>>>>>> ef71046 (Arreglitos)
             const tiemposFiltrados = Object.entries(totales).filter(([key, value]) => value > 0);
             
             let mejorCaja = "N/A";
-            let contenidoResultados = "<h2>Resultados Finales (Calculados por Python)</h2>"; // Título actualizado
+            let contenidoResultados = "<h2>Resultados Finales (Calculados por Python)</h2>"; 
 
             if (tiemposFiltrados.length > 0) {
                 const [mejor] = tiemposFiltrados.reduce((mejor, actual) => {
@@ -238,7 +246,6 @@
                 });
                 mejorCaja = mejor;
 
-                //mostramos los tiempos del objeto 'totales'
                 for (const [nombre, tiempo] of Object.entries(totales)) {
                     if (tiempo > 0) {
                         const minutos = Math.floor(tiempo / 60);
@@ -254,14 +261,12 @@
                 contenidoResultados += "<p>No se simularon clientes.</p>";
             }
 
-            //mostrar resultados y reactivar el botón
             resultadosDiv.innerHTML = contenidoResultados;
             resultadosDiv.style.display = 'block';
             boton.disabled = false;
             boton.innerText = 'Iniciar Simulación de Nuevo';
         }
 
-        //asignar la función al botón
         document.getElementById('btn-simular').addEventListener('click', iniciarSimulacion);
 
     </script>
