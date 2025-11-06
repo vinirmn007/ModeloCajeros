@@ -7,36 +7,63 @@
     
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 
+
 </head>
 <body>
     <h1>Simulación de Cajas de Supermercado</h1>
     <div class="controles">
         <div class="grupo-inputs">
+            
             <div class="control-caja">
                 <label for="n-caja1">Caja 1</label>
-                <input type="number" id="n-caja1" min="0">
+                <input type="number" id="n-caja1" min="0" placeholder="Clientes">
+                <select id="tipo-caja1">
+                    <option value="normal" selected>Normal</option>
+                    <option value="principiante">Principiante</option>
+                </select>
             </div>
+            
             <div class="control-caja">
                 <label for="n-caja2">Caja 2</label>
-                <input type="number" id="n-caja2" min="0">
+                <input type="number" id="n-caja2" min="0" placeholder="Clientes">
+                <select id="tipo-caja2">
+                    <option value="normal" selected>Normal</option>
+                    <option value="principiante">Principiante</option>
+                </select>
             </div>
+            
             <div class="control-caja">
                 <label for="n-caja3">Caja 3</label>
-                <input type="number" id="n-caja3" min="0">
+                <input type="number" id="n-caja3" min="0" placeholder="Clientes">
+                <select id="tipo-caja3">
+                    <option value="normal" selected>Normal</option>
+                    <option value="principiante">Principiante</option>
+                </select>
             </div>
+            
             <div class="control-caja">
                 <label for="n-caja4">Caja 4</label>
-                <input type="number" id="n-caja4" min="0">
+                <input type="number" id="n-caja4" min="0" placeholder="Clientes">
+                <select id="tipo-caja4">
+                    <option value="normal" selected>Normal</option>
+                    <option value="principiante">Principiante</option>
+                </select>
             </div>
-            <!-- <div class="control-caja">
-                <label for="n-caja5">Caja 5</label>
-                <input type="number" id="n-caja5" min="0">
-            </div> -->
+            
             <div class="control-caja">
                 <label for="n-caja-express" style="color: #007bff;">Caja Express</label>
-                <input type="number" id="n-caja-express" min="0">
+                <input type="number" id="n-caja-express" min="0" placeholder="Clientes">
+                <select id="tipo-caja-express">
+                    <option value="normal" selected>Normal</option>
+                    <option value="principiante">Principiante</option>
+                </select>
             </div>
+
         </div>
+        <!-- <div class="control-velocidad">
+            <input type="checkbox" id="check-velocidad">
+            <label for="check-velocidad">Acelerar Simulación (x4)</label>
+        </div> -->
         <button id="btn-simular">Iniciar Simulación</button>
     </div>
 
@@ -59,10 +86,6 @@
             <h3>Caja 4</h3>
             <div class="fila" id="fila-caja4"></div>
         </div>
-        <!-- <div class="caja" id="caja5">
-            <h3>Caja 5</h3>
-            <div class="fila" id="fila-caja5"></div>
-        </div> -->
         <div class="caja express" id="caja-express">
             <h3>Caja Express</h3>
             <div class="fila" id="fila-caja-express"></div>
@@ -136,16 +159,35 @@
             resultadosDiv.style.display = 'none';
             resultadosDiv.innerHTML = '';
 
+            // --- LECTURA DE DATOS (MODIFICADO) ---
             const n1 = document.getElementById('n-caja1').value;
+            const tipo1 = document.getElementById('tipo-caja1').value; // NUEVO
+            
             const n2 = document.getElementById('n-caja2').value;
+            const tipo2 = document.getElementById('tipo-caja2').value; // NUEVO
+            
             const n3 = document.getElementById('n-caja3').value;
+            const tipo3 = document.getElementById('tipo-caja3').value; // NUEVO
+            
             const n4 = document.getElementById('n-caja4').value;
+            const tipo4 = document.getElementById('tipo-caja4').value; // NUEVO
+            
             //const n5 = document.getElementById('n-caja5').value;
+            //const tipo5 = document.getElementById('tipo-caja5').value; // NUEVO
+            
             const n_exp = document.getElementById('n-caja-express').value;
+            const tipo_exp = document.getElementById('tipo-caja-express').value; // NUEVO
 
             let DelBackend;
             try {
-                const url = `/simular?n1=${n1}&n2=${n2}&n3=${n3}&n4=${n4}&n_exp=${n_exp}`;  //aumentar o quitar cajas &n5=${n5}
+                // --- URL (MODIFICADA) ---
+                // Añadimos los nuevos parámetros 'tipo' a la URL
+                const url = `/simular?n1=${n1}&tipo1=${tipo1}` +
+                            `&n2=${n2}&tipo2=${tipo2}` +
+                            `&n3=${n3}&tipo3=${tipo3}` +
+                            `&n4=${n4}&tipo4=${tipo4}` +
+                            `&n_exp=${n_exp}&tipo_exp=${tipo_exp}`;
+                            
                 const response = await fetch(url);
                 
                 if (!response.ok) {

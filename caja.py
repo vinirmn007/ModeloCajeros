@@ -5,7 +5,6 @@ class Caja:
         self.tipo_cajero = tipo_cajero
         self.clientes = []
 
-        # Definir tiempo de escaneo según tipo
         if tipo_cajero == "principiante":
             self.tiempo_escaneo = random.randint(3,4)
         elif tipo_cajero == "normal":

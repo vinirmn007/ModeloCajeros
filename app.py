@@ -13,8 +13,9 @@ def index():
 
 
 def ejecutar_simulacion_caja(cantidad, tipo_cajero="normal", tipo_cliente="normal"):
-    #usa las clases del backend para mostrar en el fronted
-    caja_simulada = Caja("normal") 
+    # esta función ya estaba bien, recibe 'tipo_cajero'
+    # usa las clases del backend para mostrar en el fronted
+    caja_simulada = Caja(tipo_cajero) # <-- Usa el parámetro recibido
     generar_clientes(caja_simulada, cantidad, tipo=tipo_cliente)
 
     tiempos_individuales = []
@@ -34,20 +35,33 @@ def ejecutar_simulacion_caja(cantidad, tipo_cajero="normal", tipo_cliente="norma
 
 @app.route('/simular', methods=['GET'])
 def simular():
-    """Esta es tu API, no cambia nada."""
     n1 = int(request.args.get('n1', 0))
+    tipo1 = request.args.get('tipo1', 'normal') 
+    
     n2 = int(request.args.get('n2', 0))
+    tipo2 = request.args.get('tipo2', 'normal') 
+    
     n3 = int(request.args.get('n3', 0))
+    tipo3 = request.args.get('tipo3', 'normal') 
+    
     n4 = int(request.args.get('n4', 0))
+    tipo4 = request.args.get('tipo4', 'normal') 
+    
     #n5 = int(request.args.get('n5', 0))
+    #tipo5 = request.args.get('tipo5', 'normal')
+    
     n_exp = int(request.args.get('n_exp', 0))
+    tipo_exp = request.args.get('tipo_exp', 'normal') 
 
-    tiempos1, arts1, total1 = ejecutar_simulacion_caja(n1, "normal") #cambiar a principiante
-    tiempos2, arts2, total2 = ejecutar_simulacion_caja(n2, "normal")
-    tiempos3, arts3, total3 = ejecutar_simulacion_caja(n3, "normal")
-    tiempos4, arts4, total4 = ejecutar_simulacion_caja(n4, "normal")
-    #tiempos5, arts5, total5 = ejecutar_simulacion_caja(n5, "normal")
-    tiempos_exp, arts_exp, total_exp = ejecutar_simulacion_caja(n_exp, "normal", "express")
+    
+    tiempos1, arts1, total1 = ejecutar_simulacion_caja(n1, tipo1)
+    tiempos2, arts2, total2 = ejecutar_simulacion_caja(n2, tipo2)
+    tiempos3, arts3, total3 = ejecutar_simulacion_caja(n3, tipo3)
+    tiempos4, arts4, total4 = ejecutar_simulacion_caja(n4, tipo4)
+    #tiempos5, arts5, total5 = ejecutar_simulacion_caja(n5, tipo5)
+    
+    #la caja express también tiene tipo de cajero, pero su tipo de cliente es "express"
+    tiempos_exp, arts_exp, total_exp = ejecutar_simulacion_caja(n_exp, tipo_exp, "express")
     
     datos_simulacion = {
         "caja1": {"tiempos": tiempos1, "articulos": arts1},

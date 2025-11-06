@@ -17,7 +17,7 @@ def ejecutar_una_simulacion_silenciosa():
         caja1 = Caja('normal')
         caja2 = Caja('normal')
         caja3 = Caja('normal')
-        caja4 = Caja('principiante')
+        caja4 = Caja('normal')
 
         caja_express = Caja('normal') #random.choice(["normal", "principiante"])
 
@@ -64,7 +64,7 @@ def ejecutar_simulacion_masiva(numero_de_rondas=100):
         
         if ganador:
             # ganador
-            print(f"Ronda {i + 1}: El ganador es 🟢 {ganador}")
+            #print(f"Ronda {i + 1}: El ganador es 🟢 {ganador}")
             
             #contar victorias
             if ganador in conteo_victorias:
@@ -76,4 +76,4 @@ def ejecutar_simulacion_masiva(numero_de_rondas=100):
         print(f"{nombre}: {victorias} victorias")
 
 if __name__ == "__main__":
-    ejecutar_simulacion_masiva(100)
+    ejecutar_simulacion_masiva(1000)
