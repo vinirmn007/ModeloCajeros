@@ -3,7 +3,6 @@ import os
 from contextlib import redirect_stdout
 import random
 
-# Importa tus clases y funciones existentes
 from caja import Caja
 from utilidad import generar_clientes
 
@@ -19,7 +18,7 @@ def ejecutar_una_simulacion_silenciosa():
         caja3 = Caja('normal')
         caja4 = Caja('normal')
 
-        caja_express = Caja('normal') #random.choice(["normal", "principiante"])
+        caja_express = Caja('normal')
 
         generar_clientes(caja1, 10)
         generar_clientes(caja2, 10)
@@ -29,8 +28,7 @@ def ejecutar_una_simulacion_silenciosa():
 
         tiempos = {}
 
-        #'os.devnull' para descartar todas las sentencias 'print' que ocurran
-        # dentro de este bloque 'with'.
+    
         with open(os.devnull, 'w') as f_null:
             with redirect_stdout(f_null):
                 tiempos["Caja 1"] = caja1.calcular_tiempo_total()

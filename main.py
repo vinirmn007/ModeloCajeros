@@ -7,8 +7,7 @@ try:
     caja2 = Caja('normal')
     caja3 = Caja('normal')
     caja4 = Caja('normal')
-    caja_express = Caja("normal")  # El cajero express puede ser normal, pero con menos artículos
-
+    caja_express = Caja("normal") 
 
     generar_clientes(caja1, 10)
     generar_clientes(caja2, 10)
@@ -43,9 +42,7 @@ try:
     print(f"Caja 3: {tiempo3}s → {minutos3} min")
     print(f"Caja 4: {tiempo4}s → {minutos4} min")
 
-    # Determinar cuál caja es la más rápida
-    #mejor_tiempo = min(tiempo1, tiempo2, tiempo_express, tiempo3, tiempo4)
-    #print(f"\nmejor caja es{mejor_tiempo}")
+ 
     
     tiempos = {
         "Caja 1": tiempo1,
