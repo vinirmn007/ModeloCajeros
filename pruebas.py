@@ -3,6 +3,7 @@ import os
 from contextlib import redirect_stdout
 import random
 
+# Importa tus clases y funciones existentes
 from caja import Caja
 from utilidad import generar_clientes
 
@@ -18,7 +19,7 @@ def ejecutar_una_simulacion_silenciosa():
         caja3 = Caja('normal')
         caja4 = Caja('normal')
 
-        caja_express = Caja('normal')
+        caja_express = Caja('normal') #random.choice(["normal", "principiante"])
 
         generar_clientes(caja1, 10)
         generar_clientes(caja2, 10)
@@ -28,7 +29,8 @@ def ejecutar_una_simulacion_silenciosa():
 
         tiempos = {}
 
-    
+        #'os.devnull' para descartar todas las sentencias 'print' que ocurran
+        # dentro de este bloque 'with'.
         with open(os.devnull, 'w') as f_null:
             with redirect_stdout(f_null):
                 tiempos["Caja 1"] = caja1.calcular_tiempo_total()
@@ -45,6 +47,7 @@ def ejecutar_una_simulacion_silenciosa():
         print(f"Error en una simulación: {e}", file=sys.stderr)
         return None
 
+# --- Función Principal ---
 def ejecutar_simulacion_masiva(numero_de_rondas=100):
     print(f"--- 🏁 Iniciando {numero_de_rondas} simulaciones ---")
 
@@ -68,7 +71,7 @@ def ejecutar_simulacion_masiva(numero_de_rondas=100):
                 conteo_victorias[ganador] += 1
 
     #resumen final
-    print("\n---Resumen de Victorias---")
+    print("\n--- 🏆 Resumen de Victorias (de 100 simulaciones) ---")
     for nombre, victorias in conteo_victorias.items():
         print(f"{nombre}: {victorias} victorias")
 
