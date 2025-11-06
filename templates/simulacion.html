@@ -166,16 +166,26 @@
             const tipo3 = document.getElementById('tipo-caja3').value; 
             
             const n4 = document.getElementById('n-caja4').value;
+<<<<<<< HEAD
             const tipo4 = document.getElementById('tipo-caja4').value;
             
             
+=======
+            const tipo4 = document.getElementById('tipo-caja4').value; 
+            
+            //const n5 = document.getElementById('n-caja5').value;
+            //const tipo5 = document.getElementById('tipo-caja5').value; 
+>>>>>>> ef71046 (Arreglitos)
             
             const n_exp = document.getElementById('n-caja-express').value;
             const tipo_exp = document.getElementById('tipo-caja-express').value; 
 
             let DelBackend;
             try {
+<<<<<<< HEAD
             
+=======
+>>>>>>> ef71046 (Arreglitos)
                 const url = `/simular?n1=${n1}&tipo1=${tipo1}` +
                             `&n2=${n2}&tipo2=${tipo2}` +
                             `&n3=${n3}&tipo3=${tipo3}` +
@@ -220,11 +230,15 @@
             
             await Promise.all(promesasDeSimulacionVisual);
 
+<<<<<<< HEAD
         
+=======
+            
+>>>>>>> ef71046 (Arreglitos)
             const tiemposFiltrados = Object.entries(totales).filter(([key, value]) => value > 0);
             
             let mejorCaja = "N/A";
-            let contenidoResultados = "<h2>Resultados Finales (Calculados por Python)</h2>"; // Título actualizado
+            let contenidoResultados = "<h2>Resultados Finales (Calculados por Python)</h2>"; 
 
             if (tiemposFiltrados.length > 0) {
                 const [mejor] = tiemposFiltrados.reduce((mejor, actual) => {

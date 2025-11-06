@@ -45,7 +45,6 @@ def ejecutar_una_simulacion_silenciosa():
         print(f"Error en una simulación: {e}", file=sys.stderr)
         return None
 
-# --- Función Principal ---
 def ejecutar_simulacion_masiva(numero_de_rondas=100):
     print(f"--- 🏁 Iniciando {numero_de_rondas} simulaciones ---")
 
