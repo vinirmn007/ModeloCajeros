@@ -68,7 +68,7 @@ def ejecutar_simulacion_masiva(numero_de_rondas=100):
                 conteo_victorias[ganador] += 1
 
     #resumen final
-    print("\n--- 🏆 Resumen de Victorias (de 100 simulaciones) ---")
+    print("\n---Resumen de Victorias---")
     for nombre, victorias in conteo_victorias.items():
         print(f"{nombre}: {victorias} victorias")
 
